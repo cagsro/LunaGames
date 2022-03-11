@@ -12,8 +12,8 @@ public class RagdollController : MonoBehaviour
     public Animator anim;
     public bool finishPad=false;
     public GameObject player;
-    
-
+    public Rigidbody rb;
+    public float Torque;
     private void Awake()
     {        
         if (instance == null)
@@ -24,16 +24,18 @@ public class RagdollController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
         //anim = GetComponent<Animator>();
-        rlspeed=5f;
+        rlspeed =5f;
         Physics(true);
         Collider(false);
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void FixedUpdate()
     {
         player.transform.position+=(Vector3.forward * (speed) * Time.deltaTime);
+        rb.AddTorque(transform.up*Torque, ForceMode.Impulse);
         //this.transform.position+=(Vector3.forward * (speed) * Time.deltaTime);
         if(finishPad && speed>=0f)
         {
